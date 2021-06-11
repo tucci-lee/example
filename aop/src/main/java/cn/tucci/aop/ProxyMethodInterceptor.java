@@ -13,9 +13,9 @@ import java.util.Set;
  */
 public class ProxyMethodInterceptor implements MethodInterceptor {
 
-    private Object target; // 目标元对象
+    private Object target; // 目标对象
 
-    private Set<Method> proxyMethods; // 被代理的方法
+    private Set<Method> proxyMethods; // 被增强的方法
 
     private Map<Method, List<AspectInfo>> aspectInfoMap; // 代理方法的增强信息
 
@@ -32,7 +32,7 @@ public class ProxyMethodInterceptor implements MethodInterceptor {
             Point point = new Point(target, method, objects, aspectInfoMap.get(method));
             return point.invoke();
         } else {
-            // 如果没有增强，则使用目标元对象执行方法
+            // 如果没有增强，则使用目标对象执行方法
             return method.invoke(target, objects);
         }
     }

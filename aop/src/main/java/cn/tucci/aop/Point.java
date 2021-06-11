@@ -8,11 +8,11 @@ import java.util.List;
  */
 public class Point {
 
-    private List<AspectInfo> aspectInfos;   // aop增强信息
-    private Object target;  // 目标元对象
-    private Method method; // 目标元方法
-    private Object[] args; // 方法参数
-    private int index = 0; // aop方法执行的下标
+    private List<AspectInfo> aspectInfos;   // 增强方法信息
+    private Object target;  // 目标对象
+    private Method method; // 目标方法
+    private Object[] args; // 目标方法参数
+    private int index = 0; // 增强方法执行的下标
 
     public Point(Object target, Method method, Object[] args, List<AspectInfo> aspectInfos){
         this.target = target;
@@ -22,11 +22,11 @@ public class Point {
     }
 
     public Object invoke() throws Exception {
-        // 如果当前下标和aop增强信息相等，则说明没有增强方法了，执行代理的方法
+        // 如果当前下标和增强方法信息数量相等，则说明没有增强方法了，执行目标方法
         if(this.index == aspectInfos.size()){
             return method.invoke(target, args);
         }
-        // 获取index下标的增强方法
+        // 获取index下标的增强方法信息
         AspectInfo aspectInfo = this.aspectInfos.get(index);
         // index下标增加
         this.index++;
