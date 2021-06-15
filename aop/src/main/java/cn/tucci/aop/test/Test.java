@@ -40,7 +40,7 @@ public class Test {
 
         // 创建代理对象
         Enhancer enhancer = new Enhancer();
-        MethodInterceptor methodInterceptor = new ProxyMethodInterceptor(new Bean(), methods, aspectInfoMap);
+        MethodInterceptor methodInterceptor = new ProxyMethodInterceptor(new Bean(), aspectInfoMap);
         enhancer.setSuperclass(Bean.class);
         enhancer.setCallback(methodInterceptor);
 

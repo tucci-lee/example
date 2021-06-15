@@ -7,7 +7,7 @@ import cn.tucci.aop.Point;
  */
 public class Aspect2 {
 
-    public Object around1(Point point) throws Exception {
+    public Object around1(Point point) throws Throwable {
         System.out.println("aspect2 around1 begin");
         Object invoke = point.invoke();
         System.out.println("aspect2 around1 end");
