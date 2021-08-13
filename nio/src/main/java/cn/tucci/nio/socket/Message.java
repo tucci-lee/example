@@ -1,4 +1,4 @@
-package cn.tucci.nio.im;
+package cn.tucci.nio.socket;
 
 /**
  * @author tucci.lee

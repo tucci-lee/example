@@ -1,4 +1,4 @@
-package cn.tucci.nio.netty;
+package cn.tucci.nio.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelHandlerContext;

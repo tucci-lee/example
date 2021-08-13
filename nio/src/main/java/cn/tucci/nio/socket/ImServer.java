@@ -1,4 +1,4 @@
-package cn.tucci.nio.im;
+package cn.tucci.nio.socket;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -17,20 +17,32 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ImServer {
 
-    public static void main(String[] args) throws InterruptedException {
-        new ServerBootstrap()
-                // 事件循环组（主要维护Thread和Selector）
-                .group(new NioEventLoopGroup(), new NioEventLoopGroup())
-                // 选择服务器的Channel实现
-                .channel(NioServerSocketChannel.class)
-                // 处理器
-                .childHandler(new ChannelInitializerHandler())
-                // 绑定端口
-                .bind(8080)
-                .sync();
+    public static void main(String[] args) {
+        NioEventLoopGroup boss = new NioEventLoopGroup();
+        NioEventLoopGroup work = new NioEventLoopGroup();
+        try {
+            Channel channel = new ServerBootstrap()
+                    // 事件循环组（主要维护Thread和Selector）
+                    .group(boss, work)
+                    // 选择服务器的Channel实现
+                    .channel(NioServerSocketChannel.class)
+                    // 处理器
+                    .childHandler(new SocketChannelInitializer())
+                    // 绑定端口
+                    .bind(8080)
+                    .sync()
+                    .channel();
+            // 阻塞等待服务关闭
+            channel.closeFuture().sync();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            boss.shutdownGracefully();
+            work.shutdownGracefully();
+        }
     }
 
-    static class ChannelInitializerHandler extends ChannelInitializer<NioSocketChannel> {
+    static class SocketChannelInitializer extends ChannelInitializer<NioSocketChannel> {
         // 存储连接的SocketChannel
         private Map<Integer, NioSocketChannel> socketMap = new ConcurrentHashMap<>();
 
@@ -59,31 +71,23 @@ public class ImServer {
                     // 组消息类似
                 }
 
-                @Override
-                public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-                    this.channelClose(ctx);
-                    super.exceptionCaught(ctx, cause);
-                }
-
-                @Override
-                public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-                    this.channelClose(ctx);
-                    super.channelInactive(ctx);
-                }
-
                 /**
                  * 通道关闭从map中删除
                  * @param ctx
+                 * @throws Exception
                  */
-                public void channelClose(ChannelHandlerContext ctx){
+                @Override
+                public void channelInactive(ChannelHandlerContext ctx) throws Exception {
                     Channel channel = ctx.channel();
                     for (Map.Entry<Integer, NioSocketChannel> entry : socketMap.entrySet()) {
-                        if(entry.getValue().equals(channel)){
+                        if (entry.getValue().equals(channel)) {
                             socketMap.remove(entry.getKey());
                             break;
                         }
                     }
+                    super.channelInactive(ctx);
                 }
+
             });
         }
     }

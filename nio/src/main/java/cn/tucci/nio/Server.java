@@ -1,4 +1,4 @@
-package cn.tucci.nio.socket;
+package cn.tucci.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
