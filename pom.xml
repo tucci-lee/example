@@ -11,6 +11,7 @@
     <modules>
         <module>aop</module>
         <module>nio</module>
+        <module>rpc</module>
     </modules>
 
     <dependencyManagement>
