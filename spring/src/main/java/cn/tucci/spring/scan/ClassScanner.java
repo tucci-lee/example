@@ -16,12 +16,7 @@ import java.util.jar.JarEntry;
 /**
  * @author tucci.lee
  */
-public class ScanClass {
-
-    public static void main(String[] args) {
-        Set<Class<?>> scan = scan("org.objectweb.asm","cn.tucci");
-        System.out.println(scan);
-    }
+public class ClassScanner {
 
     /**
      * 扫描包
