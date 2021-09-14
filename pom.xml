@@ -13,6 +13,7 @@
         <module>nio</module>
         <module>rpc</module>
         <module>servlet</module>
+        <module>spring</module>
     </modules>
 
     <dependencyManagement>
@@ -31,6 +32,11 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>3.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>9.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
